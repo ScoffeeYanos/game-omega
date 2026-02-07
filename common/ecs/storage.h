@@ -83,6 +83,30 @@ public:
         s.sparse[e.id]=0;
         return true;
     }
+    template<typename C>
+    size_t size()
+    {
+        auto& s = storage<C>();
+        return s.dense_data.size();
+    }
+    template<typename C, typename Func>
+    void for_each(Func&& func)
+    {
+        auto& s = storage<C>();
+        for (auto& item : s.dense_data)
+        {
+            func(item);
+        }
+    }
+    template<typename C, typename Func>
+    void for_each_entity(Func&& func)
+    {
+        auto& s = storage<C>();
+        for (size_t i = 0; i < s.dense_data.size(); ++i)
+        {
+            func(Entity{s.dense_entities[i]}, s.dense_data[i]);
+        }
+    }
 
 private:
     uint32_t next_id_=0;

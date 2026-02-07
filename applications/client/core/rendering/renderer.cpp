@@ -155,8 +155,7 @@ void Renderer::on_resize(const glm::ivec2& res) {
 }
 
 void Renderer::setup_frame() {
-    m_instances.clear();
-    m_colored_instances.clear();
+    m_render_storage = Storage{};
     m_point_lights.clear();
     m_directional_lights.clear();
 
@@ -183,9 +182,9 @@ void Renderer::geometry_pass() {
         shader->uniform("view_normal", current_camera()->view_normal);
         shader->uniform("proj", current_camera()->proj);
 
-        for (const auto& inst : m_instances) {
-            inst.model->draw(shader, inst.transform);
-        }
+        m_render_storage.for_each_entity<RenderModel>([&](Entity entity, const RenderModel& model) {
+            model.model->draw(shader, m_render_storage.get<Transform>(entity).matrix);
+        });
         shader->unbind();
     }
 
@@ -216,11 +215,12 @@ void Renderer::shadow_pass(const DirectionalLight* light, const glm::vec3& pos) 
     shader->uniform("view", m_shadow_cam_near->view);
     shader->uniform("proj", m_shadow_cam_near->proj);
 
-    for (const auto& inst : m_instances) {
-        if (inst.shadows) {
-            inst.model->draw(shader, inst.transform);
+    m_render_storage.for_each_entity<RenderModel>([&](Entity entity, const RenderModel& model) {
+        if ((model.flags & RenderModel::kShadowFlag) == 0) {
+            return;
         }
-    }
+        model.model->draw(shader, m_render_storage.get<Transform>(entity).matrix);
+    });
     shader->unbind();
     m_buffers.shadows_near->unbind();
 
@@ -234,11 +234,12 @@ void Renderer::shadow_pass(const DirectionalLight* light, const glm::vec3& pos) 
     shader->uniform("view", m_shadow_cam_far->view);
     shader->uniform("proj", m_shadow_cam_far->proj);
 
-    for (const auto& inst : m_instances) {
-        if (inst.shadows) {
-            inst.model->draw(shader, inst.transform);
+    m_render_storage.for_each_entity<RenderModel>([&](Entity entity, const RenderModel& model) {
+        if ((model.flags & RenderModel::kShadowFlag) == 0) {
+            return;
         }
-    }
+        model.model->draw(shader, m_render_storage.get<Transform>(entity).matrix);
+    });
     shader->unbind();
     m_buffers.shadows_far->unbind();
 }
@@ -396,7 +397,7 @@ void Renderer::final_pass() {
 }
 
 void Renderer::overlay_pass() {
-    if (!m_colored_instances.empty()) {
+    if (m_render_storage.size<Tint>() > 0) {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -406,12 +407,17 @@ void Renderer::overlay_pass() {
         colored_shader->uniform("view", current_camera()->view);
         colored_shader->uniform("proj", current_camera()->proj);
 
-        for (const auto& inst : m_colored_instances) {
-            colored_shader->uniform("model", inst.transform);
-            colored_shader->uniform("objectColor", inst.color);
-            colored_shader->uniform("alpha", inst.alpha);
-            inst.model->draw(colored_shader, inst.transform);
-        }
+        m_render_storage.for_each_entity<Tint>([&](Entity entity, const Tint& tint) {
+            if (!m_render_storage.has<RenderModel>(entity) || !m_render_storage.has<Transform>(entity)) {
+                return;
+            }
+            const auto& model = m_render_storage.get<RenderModel>(entity);
+            const auto& transform = m_render_storage.get<Transform>(entity);
+            colored_shader->uniform("model", transform.matrix);
+            colored_shader->uniform("objectColor", tint.color);
+            colored_shader->uniform("alpha", tint.alpha);
+            model.model->draw(colored_shader, transform.matrix);
+        });
 
         colored_shader->unbind();
         glDisable(GL_BLEND);
