@@ -1,0 +1,14 @@
+#version 430
+
+layout(location = 0) in vec3 in_pos;
+layout(location = 1) in vec4 in_col;
+
+uniform mat4 view;
+uniform mat4 proj;
+
+out vec4 v_col;
+
+void main() {
+    v_col = in_col;
+    gl_Position = proj * view * vec4(in_pos, 1);
+}
