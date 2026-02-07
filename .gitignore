@@ -1,0 +1,8 @@
+**.ini
+**.o
+**/build
+**/build/**
+**.tar
+**.gz
+**/data/**
+**/data
