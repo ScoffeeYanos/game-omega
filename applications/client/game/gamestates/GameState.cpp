@@ -18,7 +18,7 @@ void GameState::loop(MyGame& game, float dt) {
     // if (!paused) {
     //     update(dt);
     //
-    //     render(game.renderer);
+    render(game.renderer);
     //
     //     if (!ImGui::GetIO().WantCaptureMouse && ImGui::IsMouseClicked(ImGuiMouseButton_Left)) {
     //         build_mode->handle_click();
