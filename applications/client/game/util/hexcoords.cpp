@@ -31,34 +31,24 @@ glm::ivec2 util::hexcoord::round(glm::fvec2 coord)
 
     return glm::ivec2{static_cast<int>(rx), static_cast<int>(ry)};
 }
-glm::ivec3 util::hexcoord::appendz(glm::ivec2 vec2)
+glm::vec3 util::hexcoord::world_position_from_axial(glm::ivec2 coord)
 {
-    return glm::ivec3{vec2.x,vec2.y,-vec2.x-vec2.y};
-}
-glm::vec3 util::hexcoord::world_position_from_axial(int q, int r)
-{
-    constexpr float kHexSize = 1.0f;
-    float world_x = kHexSize * std::sqrt(3.0f) * (static_cast<float>(q) + static_cast<float>(r) * 0.5f);
-    float world_z = kHexSize * 1.5f * static_cast<float>(r);
+    constexpr float size = 1.0f;
+
+    float q = static_cast<float>(coord.x);
+    float r = static_cast<float>(coord.y);
+
+    float world_x = size * std::sqrt(3.0f) * (q + 0.5f * r);
+    float world_z = size * 1.5f * r;
+
     return glm::vec3(world_x, 0.0f, world_z);
 }
-
-glm::vec3 util::hexcoord::world_position_from_axial(glm::ivec2 axial)
+glm::ivec2 util::hexcoord::axial_from_world_position(glm::vec3 world)
 {
-    return world_position_from_axial(axial.x, axial.y);
-}
+    constexpr float size = 1.0f;
 
-glm::ivec2 util::hexcoord::axial_from_world_position(const glm::vec3& world)
-{
-    constexpr float kHexSize = 1.0f;
-
-    float r = world.z / (1.5f * kHexSize);
-    float q = (world.x / (std::sqrt(3.0f) * kHexSize)) - r * 0.5f;
+    float r = world.z / (1.5f * size);
+    float q = (world.x / (std::sqrt(3.0f) * size)) - 0.5f * r;
 
     return round({q, r});
-}
-
-glm::ivec2 util::hexcoord::axial_from_world(glm::vec3 world)
-{
-    return axial_from_world_position(world);
 }
