@@ -63,7 +63,7 @@ public:
     /// @brief Submit a model for deferred rendering
     /// @param shadows Controls whether the geometry can cast shadows
     void submit_model(const Model*     model,const glm::mat4 &transform=glm::mat4{1.0},
-                      const glm::vec3 &color=glm::vec3{1.0f},float alpha=1.0f,bool shadows=true)
+                      const glm::vec3 &color=glm::vec3{1.0f},float alpha=1.0f,bool shadows=false)
     {
         auto entity=m_render_storage.create_entity();
         m_render_storage.emplace<RenderModel>(entity,model,shadows?RenderModel::kShadowFlag:0u);
