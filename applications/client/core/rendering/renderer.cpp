@@ -158,6 +158,10 @@ void Renderer::setup_frame() {
     m_render_storage = Storage{};
     m_point_lights.clear();
     m_directional_lights.clear();
+    m_shadow_intensity = 1.0f;
+    float depth = 1.0f;
+    glClearTexImage(m_buffers.shadows_near->depth_texture->id, 0, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+    glClearTexImage(m_buffers.shadows_far->depth_texture->id, 0, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
 
     static uint32_t reload_counter = 0;
     if (reload_counter++ % 100 == 0) {
