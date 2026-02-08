@@ -6,9 +6,6 @@ set(TARGET aaa)
 
 add_executable(${TARGET} ${CORE_SOURCES} ${GAME_SOURCES} main.cpp)
 
-# output in source
-set_target_properties(${TARGET} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
-
 # define base path for mesh/image lookups
 target_compile_definitions(${TARGET}
     PRIVATE -DEXECUTABLE_DIR="${CMAKE_CURRENT_SOURCE_DIR}"

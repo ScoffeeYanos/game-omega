@@ -38,8 +38,8 @@ glm::vec3 util::hexcoord::world_position_from_axial(glm::ivec2 coord)
     float q = static_cast<float>(coord.x);
     float r = static_cast<float>(coord.y);
 
-    float world_x = size * std::sqrt(3.0f) * (q + 0.5f * r);
-    float world_z = size * 1.5f * r;
+    float world_x = size * 1.5f * q;
+    float world_z = size * std::sqrt(3.0f) * (r + 0.5f * q);
 
     return glm::vec3(world_x, 0.0f, world_z);
 }
@@ -47,8 +47,8 @@ glm::ivec2 util::hexcoord::axial_from_world_position(glm::vec3 world)
 {
     constexpr float size = 1.0f;
 
-    float r = world.z / (1.5f * size);
-    float q = (world.x / (std::sqrt(3.0f) * size)) - 0.5f * r;
+    float q = world.x / (1.5f * size);
+    float r = (world.z / (std::sqrt(3.0f) * size)) - 0.5f * q;
 
     return round({q, r});
 }

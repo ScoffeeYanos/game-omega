@@ -5,17 +5,18 @@ using namespace cppgl;
 void GameState::enter(MyGame& game, GameStates old_state_type) {
     world = std::make_unique<World>();
 
-    //make_camera_current(the_player->get_playercam());
+    const glm::vec3 target{11.7f, 0.0f, 6.75f};
+    const glm::vec3 camera_pos{11.7f, 12.0f, 22.0f};
+    cppgl::current_camera()->from_lookat(camera_pos, target, glm::vec3{0.0f, 1.0f, 0.0f});
+
 }
 
 void GameState::loop(MyGame& game, float dt) {
     // DebugDraw::clear();
-    //
-    // if (cppgl::current_camera()->name == "default") {
-    //     cppgl::CameraImpl::default_input_handler(cppgl::Context::frame_time());
-    //     cppgl::current_camera()->update();
-    // }
-    //
+
+    cppgl::CameraImpl::default_input_handler(cppgl::Context::frame_time());
+    cppgl::current_camera()->update();
+
     // if (!paused) {
     //     update(dt);
     //
@@ -100,12 +101,12 @@ void GameState::render(Renderer& renderer) {
 
 
     renderer.geometry_pass();
-    renderer.shadow_pass(&sun, glm::vec3{0.0f});
-    renderer.ssao_pass();
+    // renderer.shadow_pass(&sun, glm::vec3{0.0f});
+    // renderer.ssao_pass();
     renderer.lighting_pass();
-    renderer.bloom_pass();
+    // renderer.bloom_pass();
     renderer.final_pass();
-    renderer.overlay_pass();
+    // renderer.overlay_pass();
 
 }
 
