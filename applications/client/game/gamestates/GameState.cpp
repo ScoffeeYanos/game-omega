@@ -88,7 +88,7 @@ void GameState::update(float dt) {
 void GameState::render(Renderer& renderer) {
     renderer.setup_frame();
 
-    // world->submit(renderer);
+    world->submit(renderer);
 
     // renderer.submit_light(sky->get_sun());
     // PointLight player_light;

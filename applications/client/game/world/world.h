@@ -8,6 +8,7 @@ class World
 {
 public:
     World();
+    void submit(Renderer& renderer);
     static constexpr std::size_t kTileCount=100;
 private:
     Storage                       storage_{};
