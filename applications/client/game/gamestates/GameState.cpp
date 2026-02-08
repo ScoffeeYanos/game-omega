@@ -1,4 +1,5 @@
 #include "GameState.h"
+#include <glm/glm.hpp>
 using namespace cppgl;
 
 void GameState::enter(MyGame& game, GameStates old_state_type) {
@@ -90,33 +91,22 @@ void GameState::render(Renderer& renderer) {
 
     world->submit(renderer);
 
-    // renderer.submit_light(sky->get_sun());
-    // PointLight player_light;
-    // player_light.pos = player->position() + glm::vec3{0, 0.5, 0};
-    // player_light.ambient = {.8, 0.6, 0.5};
-    // player_light.diffuse = {.8, 0.6, 0.5};
-    // player_light.radius = 3;
-    // player_light.intensity = 0.5;
-    // renderer.submit_light(&player_light);
-    //
-    // renderer.geometry_pass();
-    // wasteland->render(renderer);
-    // renderer.shadow_pass(sky->get_sun(), player->position());
-    // renderer.ssao_pass();
-    // renderer.lighting_pass();
-    // renderer.bloom_pass();
-    // renderer.final_pass();
-    //
-    // renderer.overlay_pass();
-    //
-    // world->draw_particles(renderer);
-    // player->draw_particles(&renderer);
-    //
-    // sky->render();
+    DirectionalLight sun;
+    sun.dir = glm::normalize(glm::vec3{-0.4f, -1.0f, -0.3f});
+    sun.ambient = glm::vec3{0.25f, 0.25f, 0.25f};
+    sun.diffuse = glm::vec3{0.9f, 0.85f, 0.8f};
+    sun.specular = glm::vec3{0.2f, 0.2f, 0.2f};
+    renderer.submit_light(&sun);
 
-    // if (Context::instance().show_gui) {
-    //     DebugDraw::draw();
-    // }
+
+    renderer.geometry_pass();
+    renderer.shadow_pass(&sun, glm::vec3{0.0f});
+    renderer.ssao_pass();
+    renderer.lighting_pass();
+    renderer.bloom_pass();
+    renderer.final_pass();
+    renderer.overlay_pass();
+
 }
 
 void GameState::draw_debug_menu(MyGame& game) {

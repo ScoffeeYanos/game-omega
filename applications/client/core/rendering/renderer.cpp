@@ -282,7 +282,7 @@ void Renderer::lighting_pass() {
     auto& buffer = m_buffers.lighting;
 
     buffer->bind();
-    glClearColor(0.2, 0.2, 0.2, 1.0);
+    glClearColor(1.0, 0.4, 0.7, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.0, 0.0, 0.0, 0.0);
 
