@@ -1,5 +1,7 @@
 #include "GameState.h"
 #include <glm/glm.hpp>
+
+#include "core/debug/debug-draw.h"
 using namespace cppgl;
 
 void GameState::enter(MyGame& game, GameStates old_state_type) {
@@ -12,7 +14,7 @@ void GameState::enter(MyGame& game, GameStates old_state_type) {
 }
 
 void GameState::loop(MyGame& game, float dt) {
-    // DebugDraw::clear();
+    DebugDraw::clear();
 
     cppgl::CameraImpl::default_input_handler(cppgl::Context::frame_time());
     cppgl::current_camera()->update();
@@ -92,6 +94,8 @@ void GameState::render(Renderer& renderer) {
 
     world->submit(renderer);
 
+    DebugDraw::line(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{0.0f, 5.0f, 0.0f}, glm::vec4{0.0f, 0.0f, 1.0f, 1.0f});
+
     DirectionalLight sun;
     sun.dir = glm::normalize(glm::vec3{-0.4f, -1.0f, -0.3f});
     sun.ambient = glm::vec3{0.25f, 0.25f, 0.25f};
@@ -107,6 +111,7 @@ void GameState::render(Renderer& renderer) {
     // renderer.bloom_pass();
     renderer.final_pass();
     // renderer.overlay_pass();
+    DebugDraw::draw();
 
 }
 
