@@ -9,7 +9,9 @@ class World
 public:
     World();
     void submit(Renderer& renderer);
-    static constexpr std::size_t kTileCount=100;
+    static constexpr std::size_t kWorldWidth =100;
+    static constexpr std::size_t kWorldHeight=100;
+    static constexpr std::size_t kTileCount  =kWorldWidth*kWorldHeight;
 private:
     Storage                       storage_{};
     std::array<Entity,kTileCount> tiles_{};
