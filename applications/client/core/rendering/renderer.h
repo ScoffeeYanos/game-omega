@@ -19,6 +19,13 @@ struct Transform
     {
     }
 };
+struct TransformBatch
+{
+    std::vector<glm::mat4> matrices;
+    explicit TransformBatch(std::vector<glm::mat4> matrices_in): matrices(std::move(matrices_in))
+    {
+    }
+};
 struct Tint
 {
     glm::vec3 color{1.0f};
@@ -68,6 +75,14 @@ public:
         auto entity=m_render_storage.create_entity();
         m_render_storage.emplace<RenderModel>(entity,model,shadows?RenderModel::kShadowFlag:0u);
         m_render_storage.emplace<Transform>(entity,transform);
+        m_render_storage.emplace<Tint>(entity,color,alpha);
+    }
+    void submit_model_batch(const Model* model,std::vector<glm::mat4> transforms,
+                            const glm::vec3 &color=glm::vec3{1.0f},float alpha=1.0f,bool shadows=false)
+    {
+        auto entity=m_render_storage.create_entity();
+        m_render_storage.emplace<RenderModel>(entity,model,shadows?RenderModel::kShadowFlag:0u);
+        m_render_storage.emplace<TransformBatch>(entity,std::move(transforms));
         m_render_storage.emplace<Tint>(entity,color,alpha);
     }
     void  draw_debug_gui();

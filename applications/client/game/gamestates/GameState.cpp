@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 
 #include "core/debug/debug-draw.h"
+#include "game/util/hexcoords.h"
 using namespace cppgl;
 
 void GameState::enter(MyGame& game, GameStates old_state_type) {
@@ -95,6 +96,7 @@ void GameState::render(Renderer& renderer) {
     world->submit(renderer);
 
     DebugDraw::line(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{0.0f, 5.0f, 0.0f}, glm::vec4{0.0f, 0.0f, 1.0f, 1.0f});
+    DebugDraw::line(util::hexcoord::world_position_from_axial({1,0}), util::hexcoord::world_position_from_axial({1,0})+glm::vec3{0.0f,5.0f,0.0f}, glm::vec4{0.0f, 1.0f, 1.0f, 1.0f});
 
     DirectionalLight sun;
     sun.dir = glm::normalize(glm::vec3{-0.4f, -1.0f, -0.3f});

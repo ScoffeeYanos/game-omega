@@ -187,7 +187,16 @@ void Renderer::geometry_pass() {
         shader->uniform("proj", current_camera()->proj);
 
         m_render_storage.for_each_entity<RenderModel>([&](Entity entity, const RenderModel& model) {
-            model.model->draw(shader, m_render_storage.get<Transform>(entity).matrix);
+            if (m_render_storage.has<Transform>(entity)) {
+                model.model->draw(shader, m_render_storage.get<Transform>(entity).matrix);
+                return;
+            }
+            if (m_render_storage.has<TransformBatch>(entity)) {
+                const auto& transforms = m_render_storage.get<TransformBatch>(entity).matrices;
+                for (const glm::mat4& transform : transforms) {
+                    model.model->draw(shader, transform);
+                }
+            }
         });
         shader->unbind();
     }
@@ -223,7 +232,16 @@ void Renderer::shadow_pass(const DirectionalLight* light, const glm::vec3& pos) 
         if ((model.flags & RenderModel::kShadowFlag) == 0) {
             return;
         }
-        model.model->draw(shader, m_render_storage.get<Transform>(entity).matrix);
+        if (m_render_storage.has<Transform>(entity)) {
+            model.model->draw(shader, m_render_storage.get<Transform>(entity).matrix);
+            return;
+        }
+        if (m_render_storage.has<TransformBatch>(entity)) {
+            const auto& transforms = m_render_storage.get<TransformBatch>(entity).matrices;
+            for (const glm::mat4& transform : transforms) {
+                model.model->draw(shader, transform);
+            }
+        }
     });
     shader->unbind();
     m_buffers.shadows_near->unbind();
@@ -242,7 +260,16 @@ void Renderer::shadow_pass(const DirectionalLight* light, const glm::vec3& pos) 
         if ((model.flags & RenderModel::kShadowFlag) == 0) {
             return;
         }
-        model.model->draw(shader, m_render_storage.get<Transform>(entity).matrix);
+        if (m_render_storage.has<Transform>(entity)) {
+            model.model->draw(shader, m_render_storage.get<Transform>(entity).matrix);
+            return;
+        }
+        if (m_render_storage.has<TransformBatch>(entity)) {
+            const auto& transforms = m_render_storage.get<TransformBatch>(entity).matrices;
+            for (const glm::mat4& transform : transforms) {
+                model.model->draw(shader, transform);
+            }
+        }
     });
     shader->unbind();
     m_buffers.shadows_far->unbind();

@@ -7,29 +7,23 @@
 #include "game/util/hexcoords.h"
 World::World()
 {
-    for(std::size_t index=0;index<tiles_.size();++index)
+    chunks_.reserve(kChunkCount);
+
+    for(std::size_t index=0;index<kChunkCount;++index)
     {
-        const int    x          =static_cast<int>(index%kWorldWidth);
-        const int    y          =static_cast<int>(index/kWorldWidth);
-        const Entity tile_entity=storage_.create_entity();
-        storage_.emplace<T_Pos>(tile_entity,T_Pos{{x,y}});
-        storage_.emplace<T_Terrain_Type>(tile_entity,T_Terrain_Type::Grass);
-        tiles_[index]=tile_entity;
+        const int chunk_x = static_cast<int>(index % kWorldWidth);
+        const int chunk_y = static_cast<int>(index / kWorldWidth);
+
+        // Radius 1 hex chunk spans 3 axial steps center-to-center when tiled.
+        const glm::ivec2 chunk_origin{chunk_x * 3, chunk_y * 3};
+        chunks_.emplace_back(chunk_origin, world_storage_);
     }
 }
 
 void World::submit(Renderer& renderer)
 {
-    static Model tile_model{"data/tile.obj"};
-
-    storage_.for_each<T_Pos>([&renderer](const T_Pos& pos)
+    for (const Chunk& chunk : chunks_)
     {
-        const glm::vec3 world_pos =
-            util::hexcoord::world_position_from_axial(pos.pos);
-
-        const glm::mat4 transform =
-            glm::translate(glm::mat4{1.0f}, world_pos);
-
-        renderer.submit_model(&tile_model, transform);
-    });
+        chunk.submit(renderer);
+    }
 }

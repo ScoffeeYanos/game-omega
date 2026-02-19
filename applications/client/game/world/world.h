@@ -1,7 +1,7 @@
 #pragma once
-#include <array>
 #include <cstddef>
-#include "tile.h"
+
+#include "chunk.h"
 #include "ecs/storage.h"
 class Renderer;
 class World
@@ -9,11 +9,11 @@ class World
 public:
     World();
     void submit(Renderer& renderer);
-    static constexpr std::size_t kWorldWidth =100;
-    static constexpr std::size_t kWorldHeight=100;
-    static constexpr std::size_t kTileCount  =kWorldWidth*kWorldHeight;
+    static constexpr std::size_t kWorldWidth =1;
+    static constexpr std::size_t kWorldHeight=1;
+    static constexpr std::size_t kChunkCount =kWorldWidth*kWorldHeight;
 private:
-    Storage                       world_storage_{};
-    std::array<Entity,kTileCount> tiles_{};
+    Storage                        world_storage_{};
+    std::vector<Chunk>             chunks_;
 };
 extern World* the_world;
