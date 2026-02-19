@@ -13,7 +13,7 @@ public:
     static constexpr std::size_t kWorldHeight=100;
     static constexpr std::size_t kTileCount  =kWorldWidth*kWorldHeight;
 private:
-    Storage                       storage_{};
+    Storage                       world_storage_{};
     std::array<Entity,kTileCount> tiles_{};
 };
 extern World* the_world;
