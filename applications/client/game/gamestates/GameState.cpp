@@ -96,6 +96,7 @@ void GameState::render(Renderer& renderer) {
     world->submit(renderer);
 
     DebugDraw::line(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{0.0f, 5.0f, 0.0f}, glm::vec4{0.0f, 0.0f, 1.0f, 1.0f});
+    DebugDraw::line(glm::vec3{1.0f, 0.0f, 0.0f}, glm::vec3{1.0f, 5.0f, 0.0f}, glm::vec4{1.0f, 0.0f, 1.0f, 1.0f});
     DebugDraw::line(util::hexcoord::world_position_from_axial({1,0}), util::hexcoord::world_position_from_axial({1,0})+glm::vec3{0.0f,5.0f,0.0f}, glm::vec4{0.0f, 1.0f, 1.0f, 1.0f});
 
     DirectionalLight sun;

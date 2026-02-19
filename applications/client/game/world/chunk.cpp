@@ -32,7 +32,6 @@ void Chunk::rebuild_tiles()
             const Entity tile_entity = storage_.create_entity();
             storage_.emplace<T_Pos>(tile_entity,T_Pos{pos_+glm::ivec2(x,y)});
             storage_.emplace<T_Terrain_Type>(tile_entity,T_Terrain_Type::Grass);
-            std::cout << pos_.x+x << " " << pos_.y+y << std::endl;
             tiles_.push_back(tile_entity);
         }
     }
