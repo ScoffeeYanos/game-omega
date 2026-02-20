@@ -24,7 +24,7 @@ MyGame::MyGame() {
     music_.sound().setLooping(true);
     music_.play();
 
-    GameUi::Init(sound_manager);
+    UiDefs::Init(sound_manager);
     DebugDraw::init();
 }
 

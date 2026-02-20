@@ -14,8 +14,11 @@ World::World()
         const int chunk_x = static_cast<int>(index % kWorldWidth);
         const int chunk_y = static_cast<int>(index / kWorldWidth);
 
-        // Radius 1 hex chunk spans 3 axial steps center-to-center when tiled.
-        const glm::ivec2 chunk_origin{chunk_x * 3, chunk_y * 3};
+        constexpr int radius = Chunk::radius;
+        const glm::ivec2 chunk_origin{
+            chunk_x * (radius + 1) - chunk_y * radius,
+            chunk_x * radius + chunk_y * ((2 * radius) + 1)
+        };
         chunks_.emplace_back(chunk_origin, world_storage_);
     }
 }

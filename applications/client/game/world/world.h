@@ -9,8 +9,8 @@ class World
 public:
     World();
     void submit(Renderer& renderer);
-    static constexpr std::size_t kWorldWidth =2;
-    static constexpr std::size_t kWorldHeight=2;
+    static constexpr std::size_t kWorldWidth =10;
+    static constexpr std::size_t kWorldHeight=10;
     static constexpr std::size_t kChunkCount =kWorldWidth*kWorldHeight;
 private:
     Storage                        world_storage_{};
