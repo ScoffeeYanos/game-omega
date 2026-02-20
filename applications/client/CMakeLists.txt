@@ -2,7 +2,7 @@
 file(GLOB_RECURSE CORE_SOURCES "core/*.cpp")
 file(GLOB_RECURSE GAME_SOURCES "game/*.cpp")
 
-set(TARGET aaa)
+set(TARGET client)
 
 add_executable(${TARGET} ${CORE_SOURCES} ${GAME_SOURCES} main.cpp)
 
@@ -17,7 +17,7 @@ target_compile_definitions(${TARGET}
 find_package(OpenGL REQUIRED)
 
 target_include_directories(${TARGET}
-    PRIVATE ${OPENGL_INCLUDE_DIRS} ./
+    PRIVATE ${OPENGL_INCLUDE_DIRS} ./ ../
 )
 target_link_libraries(${TARGET}
     PRIVATE ${OPENGL_LIBRARIES}
@@ -36,5 +36,5 @@ target_link_libraries(${TARGET}
 
 # common libs
 target_link_libraries(${TARGET}
-    PRIVATE cppgl nlohmann_json soloud
+    PRIVATE cppgl nlohmann_json soloud  app_common
 )

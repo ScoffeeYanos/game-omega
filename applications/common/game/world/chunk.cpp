@@ -1,7 +1,7 @@
 #include "chunk.h"
 
 #include "tile.h"
-#include "game/util/hexcoords.h"
+#include "common/game/util/hexcoords.h"
 
 namespace
 {
@@ -35,21 +35,4 @@ void Chunk::rebuild_tiles()
             tiles_.push_back(tile_entity);
         }
     }
-}
-
-void Chunk::submit(Renderer& renderer) const
-{
-    static Model tile_model{"data/tile.obj"};
-
-    std::vector<glm::mat4> tile_transforms;
-    tile_transforms.reserve(tiles_.size());
-
-    for (const Entity tile_entity : tiles_)
-    {
-        const T_Pos& pos = storage_.get<T_Pos>(tile_entity);
-        const glm::vec3 world_pos = util::hexcoord::world_position_from_axial(pos.pos);
-        tile_transforms.push_back(glm::translate(glm::mat4{1.0f}, world_pos));
-    }
-
-    renderer.submit_model_batch(&tile_model, tile_transforms);
 }

@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 
 #include "core/debug/debug-draw.h"
-#include "game/util/hexcoords.h"
+#include "common/game/util/hexcoords.h"
 using namespace cppgl;
 
 void GameState::enter(MyGame& game, GameStates old_state_type) {
