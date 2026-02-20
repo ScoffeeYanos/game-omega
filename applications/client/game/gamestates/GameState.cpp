@@ -6,7 +6,7 @@
 using namespace cppgl;
 
 void GameState::enter(MyGame& game, GameStates old_state_type) {
-    world = std::make_unique<World>();
+    world = std::make_unique<C_World>();
 
     const glm::vec3 target{11.7f, 0.0f, 6.75f};
     const glm::vec3 camera_pos{11.7f, 12.0f, 22.0f};

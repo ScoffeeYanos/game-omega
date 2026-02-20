@@ -4,7 +4,7 @@
 #include "core/game.h"
 #include "core/rendering/renderer.h"
 #include "game/game.h"
-#include "game/world/world.h"
+#include "game/world/c_world.h"
 using Game = GameSingleton<MyGame, GameStates>;
 class GameState : public Game::GameStateBase {
 public:
@@ -22,5 +22,5 @@ private:
     void draw_debug_menu(MyGame& game);
     void draw_pause_menu();
 
-    std::unique_ptr<World> world;
+    std::unique_ptr<C_World> world;
 };

@@ -1,11 +1,11 @@
-#include "world.h"
+#include "c_world.h"
 #include <cstddef>
 
 #include "core/rendering/model.h"
 #include "core/rendering/renderer.h"
 #include "ecs/storage.h"
 #include "game/util/hexcoords.h"
-World::World()
+C_World::C_World()
 {
     chunks_.reserve(kChunkCount);
 
@@ -23,7 +23,7 @@ World::World()
     }
 }
 
-void World::submit(Renderer& renderer)
+void C_World::submit(Renderer& renderer)
 {
     for (const Chunk& chunk : chunks_)
     {
