@@ -9,7 +9,7 @@ class Inventory;
 struct ItemStack;
 struct ItemDef;
 
-namespace GameUi {
+namespace UiDefs {
 void Init(SoundManager& sound_manager);
 
 bool MenuButton(const char* text);

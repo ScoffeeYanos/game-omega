@@ -2,7 +2,7 @@
 
 #include "core/ui.h"
 
-namespace GameUi {
+namespace UiDefs {
 
 static constexpr float BUTTON_H = 42.0f;
 static constexpr float SPACING = 10.0f;
