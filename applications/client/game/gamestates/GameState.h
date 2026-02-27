@@ -5,6 +5,7 @@
 #include "core/rendering/renderer.h"
 #include "game/game.h"
 #include "game/world/c_world.h"
+#include "game/util/connector.h"
 using Game = GameSingleton<MyGame, GameStates>;
 class GameState : public Game::GameStateBase {
 public:
@@ -23,4 +24,5 @@ private:
     void draw_pause_menu();
 
     std::unique_ptr<C_World> world;
+    std::unique_ptr<Connector> connector_;
 };

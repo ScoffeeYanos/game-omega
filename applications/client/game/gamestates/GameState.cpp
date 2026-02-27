@@ -11,7 +11,7 @@ void GameState::enter(MyGame& game, GameStates old_state_type) {
     const glm::vec3 target{11.7f, 0.0f, 6.75f};
     const glm::vec3 camera_pos{11.7f, 12.0f, 22.0f};
     cppgl::current_camera()->from_lookat(camera_pos, target, glm::vec3{0.0f, 1.0f, 0.0f});
-
+    connector_  = std::make_unique<Connector>(40000);
 }
 
 void GameState::loop(MyGame& game, float dt) {

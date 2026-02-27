@@ -2,6 +2,8 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+
+#include "common/comm/codes.h"
 #include "common/comm/comm.h"
 void util::connector::broadcast_message(std::vector<comm::TcpConnection> &connections,
                                         std::mutex &connections_mutex,const comm::Message &message)
@@ -29,7 +31,7 @@ void util::connector::handle_new_connection(comm::TcpConnection               co
     try
     {
         const auto request=connection.receive();
-        if(request.type!=1)
+        if(request.type!=comm::codes::handshake)
         {
             connection.close();
             return;
@@ -45,7 +47,7 @@ void util::connector::handle_new_connection(comm::TcpConnection               co
             std::cout<<"Client connected ("<<connections.size()<<"/"<<kMaxConnections<<")"
                     <<std::endl;
         }
-        const auto welcome=comm::Message::from<uint32_t>(2,0);
+        const auto welcome=comm::Message::from<uint32_t>(comm::codes::welcome,0);
         broadcast_message(connections,connections_mutex,welcome);
     }
     catch(const std::exception &e)
